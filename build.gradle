@@ -1,0 +1,24 @@
+apply plugin: 'war'
+
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+sourceCompatibility = targetCompatibility = '1.8'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+   compile 'fish.payara.extras:payara-micro:4.1.2.174'
+   compile 'javax:javaee-api:7.0'
+}
+
+war { 
+    archiveName = 'payara'
+    exclude('**/payara/**')
+}
+
+task run(type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    main = 'payaramicro.com.exam.EmbeddedPayara'
+    args war.archivePath.path
+}
